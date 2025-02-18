@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slope Game</title>
+    <style>
+        body { margin: 0; overflow: hidden; }
+        canvas { display: block; }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+    <script>
+        let scene, camera, renderer, ball, floor;
+        let speed = 0.1;
+        let left = false, right = false;
+
+        function init() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            renderer = new THREE.WebGLRenderer();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            document.body.appendChild(renderer.domElement);
+
+            let geometry = new THREE.BoxGeometry(10, 1, 200);
+            let material = new THREE.MeshBasicMaterial({ color: 0x5555ff, wireframe: true });
+            floor = new THREE.Mesh(geometry, material);
+            floor.position.z = -100;
+            scene.add(floor);
+
+            let ballGeo = new THREE.SphereGeometry(1, 32, 32);
+            let ballMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
+            ball = new THREE.Mesh(ballGeo, ballMat);
+            ball.position.y = 2;
+            scene.add(ball);
+
+            camera.position.z = 5;
+            camera.position.y = 3;
+        }
+
+        function animate() {
+            requestAnimationFrame(animate);
+            ball.position.z -= speed;
+            if (left) ball.position.x -= 0.1;
+            if (right) ball.position.x += 0.1;
+            camera.position.z = ball.position.z + 5;
+            renderer.render(scene, camera);
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if (event.code === 'ArrowLeft') left = true;
+            if (event.code === 'ArrowRight') right = true;
+        });
+        document.addEventListener('keyup', (event) => {
+            if (event.code === 'ArrowLeft') left = false;
+            if (event.code === 'ArrowRight') right = false;
+        });
+
+        init();
+        animate();
+    </script>
+</body>
+</html>
