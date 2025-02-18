@@ -3,114 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Slope Game</title>
-    <style>
-        body { margin: 0; overflow: hidden; background-color: black; }
-        canvas { display: block; }
-    </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <title>Chat App</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <script>
-        let scene, camera, renderer, ball, floor, obstacles = [];
-        let speed = 0.2;
-        let left = false, right = false;
-        let gameOver = false;
-
-        function init() {
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            renderer = new THREE.WebGLRenderer();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            document.body.appendChild(renderer.domElement);
-
-            createPath();
-            createBall();
-            generateObstacles();
-        }
-
-        function createPath() {
-            let geometry = new THREE.BoxGeometry(10, 2, 200);
-            let material = new THREE.MeshBasicMaterial({ color: 0x00ff00, wireframe: false });
-            floor = new THREE.Mesh(geometry, material);
-            floor.position.z = -100;
-            scene.add(floor);
-        }
-
-        function createBall() {
-            let ballGeo = new THREE.SphereGeometry(1.5, 32, 32);
-            let ballMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-            ball = new THREE.Mesh(ballGeo, ballMat);
-            ball.position.y = 3;
-            scene.add(ball);
-        }
-
-        function generateObstacles() {
-            for (let i = 0; i < 10; i++) {
-                let size = Math.random() * 3 + 2;
-                let obsGeo = new THREE.BoxGeometry(size, size, size);
-                let obsMat = new THREE.MeshBasicMaterial({ color: 0xff0000 });
-                let obstacle = new THREE.Mesh(obsGeo, obsMat);
-                obstacle.position.set((Math.random() * 8) - 4, size / 2, -(Math.random() * 150));
-                scene.add(obstacle);
-                obstacles.push(obstacle);
-            }
-        }
-
-        function animate() {
-            if (gameOver) return;
-
-            requestAnimationFrame(animate);
-            ball.position.z -= speed;
-            if (left) ball.position.x -= 0.15;
-            if (right) ball.position.x += 0.15;
-            camera.position.z = ball.position.z + 5;
-
-            checkCollisions();
-            checkOutOfBounds();
-            adjustPath();
-            renderer.render(scene, camera);
-        }
-
-        function adjustPath() {
-            if (Math.random() < 0.01) {
-                let newHeight = Math.random() * 2 + 1;
-                floor.scale.y = newHeight;
-                floor.position.y = newHeight - 1;
-            }
-        }
-
-        function checkCollisions() {
-            for (let obs of obstacles) {
-                if (ball.position.distanceTo(obs.position) < (obs.geometry.parameters.width / 2 + 1.5)) {
-                    endGame();
-                    return;
-                }
-            }
-        }
-
-        function checkOutOfBounds() {
-            if (ball.position.x < -5 || ball.position.x > 5) {
-                endGame();
-            }
-        }
-
-        function endGame() {
-            gameOver = true;
-            alert("Game Over! Refresh to try again.");
-        }
-
-        document.addEventListener('keydown', (event) => {
-            if (event.code === 'ArrowLeft') left = true;
-            if (event.code === 'ArrowRight') right = true;
-        });
-        document.addEventListener('keyup', (event) => {
-            if (event.code === 'ArrowLeft') left = false;
-            if (event.code === 'ArrowRight') right = false;
-        });
-
-        init();
-        animate();
-    </script>
+    <div id="app">
+        <div id="login-container">
+            <h2>Login or Sign Up</h2>
+            <input type="text" id="username" placeholder="Username">
+            <input type="password" id="password" placeholder="Password">
+            <button onclick="login()">Login</button>
+            <button onclick="signUp()">Sign Up</button>
+        </div>
+        <div id="chat-container" style="display: none;">
+            <h2>Chats</h2>
+            <div id="friends-list"></div>
+            <button onclick="openAddFriend()">Add Friend</button>
+            <div id="chat-box"></div>
+            <input type="text" id="message" placeholder="Type a message">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
