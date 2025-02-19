@@ -63,11 +63,18 @@ function switchTheme() {
     }
 }
 
-// Add friend request functionality
-function sendFriendRequest() {
+function addChat() {
     if (!currentUser) {
         alert('You need to log in to send friend requests');
         return;
     }
     // Functionality to send friend request goes here
+}
+
+function editChats() {
+    if (!currentUser) {
+        alert('You need to log in to edit chats');
+        return;
+    }
+    // Functionality to edit chats goes here
 }

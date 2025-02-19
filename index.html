@@ -30,8 +30,12 @@
             <button onclick="register()">Register</button>
             <p>Have an account? <span onclick="showLogin()">Login</span></p>
         </div>
-        <div id="chat" class="hidden">
-            <h2>Welcome, <span id="displayName"></span></h2>
+        <div id="chat" class="hidden full-screen">
+            <div class="header">
+                <button onclick="addChat()">Add Chat</button>
+                <h2>Welcome, <span id="displayName"></span></h2>
+                <button onclick="editChats()">Edit</button>
+            </div>
             <div id="friendRequests" class="hidden">
                 <h3>Friend Requests</h3>
                 <ul id="requestsList"></ul>
