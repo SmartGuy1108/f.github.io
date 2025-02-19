@@ -15,6 +15,13 @@
                 <option value="dark">Dark Mode</option>
             </select>
         </div>
+        <div id="deviceSwitcher">
+            <label for="deviceSelect">Device:</label>
+            <select id="deviceSelect" onchange="switchDevice()">
+                <option value="laptop">Laptop Mode</option>
+                <option value="phone">Phone Mode</option>
+            </select>
+        </div>
         <div id="login" class="form">
             <h2>Login</h2>
             <input type="text" id="email" placeholder="Email">

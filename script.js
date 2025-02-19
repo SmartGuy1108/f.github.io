@@ -1,5 +1,7 @@
 let users = [];
 let currentUser = null;
+let chats = [];
+let friendRequests = [];
 
 function showLogin() {
     document.getElementById('login').classList.remove('hidden');
@@ -22,6 +24,7 @@ function login() {
         document.getElementById('displayName').innerText = user.username;
         document.getElementById('login').classList.add('hidden');
         document.getElementById('chat').classList.remove('hidden');
+        switchDevice();
     } else {
         alert('Invalid credentials');
     }
@@ -63,8 +66,23 @@ function switchTheme() {
     }
 }
 
+function switchDevice() {
+    const device = document.getElementById('deviceSelect').value;
+    if (device === 'phone') {
+        document.querySelector('.container').classList.add('phone-mode');
+        document.querySelector('.container').classList.remove('laptop-mode');
+    } else {
+        document.querySelector('.container').classList.add('laptop-mode');
+        document.querySelector('.container').classList.remove('phone-mode');
+    }
+}
+
 function showAddChat() {
-    alert('Add chat functionality');
+    const friendEmail = prompt('Enter the email of the friend you want to add:');
+    if (friendEmail) {
+        friendRequests.push({ from: currentUser.email, to: friendEmail });
+        alert('Friend request sent!');
+    }
 }
 
 function showEditOptions() {
@@ -72,13 +90,17 @@ function showEditOptions() {
 }
 
 function sendFriendRequest() {
-    alert('Send friend request functionality');
+    const friendEmail = prompt('Enter the email of the friend you want to add:');
+    if (friendEmail) {
+        friendRequests.push({ from: currentUser.email, to: friendEmail });
+        alert('Friend request sent!');
+    }
 }
 
 function createGroup() {
-    alert('Create group functionality');
-}
-
-function deleteChat() {
-    alert('Delete chat functionality');
-}
+    const groupName = prompt('Enter the name of the group:');
+    if (groupName) {
+        const groupMembers = prompt('Enter the emails of the group members, separated by commas:');
+        const membersArray = groupMembers.split(',').map(email => email.trim());
+        chats.push({ groupName, members: membersArray });
+        alert('
