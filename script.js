@@ -63,18 +63,22 @@ function switchTheme() {
     }
 }
 
-function addChat() {
-    if (!currentUser) {
-        alert('You need to log in to send friend requests');
-        return;
-    }
-    // Functionality to send friend request goes here
+function showAddChat() {
+    alert('Add chat functionality');
 }
 
-function editChats() {
-    if (!currentUser) {
-        alert('You need to log in to edit chats');
-        return;
-    }
-    // Functionality to edit chats goes here
+function showEditOptions() {
+    document.getElementById('editOptions').classList.toggle('hidden');
+}
+
+function sendFriendRequest() {
+    alert('Send friend request functionality');
+}
+
+function createGroup() {
+    alert('Create group functionality');
+}
+
+function deleteChat() {
+    alert('Delete chat functionality');
 }
