@@ -1,78 +1,64 @@
-let users = {}; // Store user accounts
+let users = [];
 let currentUser = null;
-let friends = {};
+
+function showLogin() {
+    document.getElementById('login').classList.remove('hidden');
+    document.getElementById('register').classList.add('hidden');
+}
+
+function showRegister() {
+    document.getElementById('register').classList.remove('hidden');
+    document.getElementById('login').classList.add('hidden');
+}
 
 function login() {
-    let username = document.getElementById("username").value;
-    let password = document.getElementById("password").value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
 
-    if (users[username] && users[username] === password) {
-        currentUser = username;
-        showChat();
-    } else {
-        alert("Invalid username or password.");
-    }
-}
-
-function signUp() {
-    let username = document.getElementById("username").value;
-    let password = document.getElementById("password").value;
-
-    if (!users[username]) {
-        users[username] = password;
-        alert("Account created! Please log in.");
-    } else {
-        alert("Username already exists.");
-    }
-}
-
-function showChat() {
-    document.getElementById("login-container").style.display = "none";
-    document.getElementById("chat-container").style.display = "block";
-    loadFriends();
-}
-
-function openAddFriend() {
-    let friendName = prompt("Enter the username of the friend you want to add:");
-    if (friendName && users[friendName] && friendName !== currentUser) {
-        friends[friendName] = [];
-        alert(`${friendName} added!`);
-        loadFriends();
-    } else {
-        alert("User not found or invalid.");
-    }
-}
-
-function loadFriends() {
-    let friendsList = document.getElementById("friends-list");
-    friendsList.innerHTML = "<h3>Your Friends</h3>";
+    const user = users.find(user => user.email === email && user.password === password);
     
-    for (let friend in friends) {
-        let btn = document.createElement("button");
-        btn.innerText = friend;
-        btn.onclick = () => openChat(friend);
-        friendsList.appendChild(btn);
+    if (user) {
+        currentUser = user;
+        document.getElementById('displayName').innerText = user.username;
+        document.getElementById('login').classList.add('hidden');
+        document.getElementById('chat').classList.remove('hidden');
+    } else {
+        alert('Invalid credentials');
     }
 }
 
-function openChat(friend) {
-    let chatBox = document.getElementById("chat-box");
-    chatBox.innerHTML = `<h3>Chat with ${friend}</h3>`;
-    chatBox.dataset.friend = friend;
+function register() {
+    const email = document.getElementById('newEmail').value;
+    const password = document.getElementById('newPassword').value;
+    const username = document.getElementById('username').value;
 
-    friends[friend].forEach(msg => {
-        let msgDiv = document.createElement("div");
-        msgDiv.innerText = msg;
-        chatBox.appendChild(msgDiv);
-    });
+    const existingUser = users.find(user => user.email === email);
+
+    if (existingUser) {
+        alert('User already exists');
+    } else {
+        const newUser = { email, password, username, friends: [], friendRequests: [] };
+        users.push(newUser);
+        alert('Registration successful');
+        showLogin();
+    }
 }
 
 function sendMessage() {
-    let message = document.getElementById("message").value;
-    let friend = document.getElementById("chat-box").dataset.friend;
+    const message = document.getElementById('message').value;
+    if (message.trim() !== '') {
+        const messageElement = document.createElement('div');
+        messageElement.innerText = `${currentUser.username}: ${message}`;
+        document.getElementById('messages').appendChild(messageElement);
+        document.getElementById('message').value = '';
+    }
+}
 
-    if (message && friend) {
-        friends[friend].push(`${currentUser}: ${message}`);
-        openChat(friend);
+function switchTheme() {
+    const theme = document.getElementById('themeSelect').value;
+    if (theme === 'dark') {
+        document.body.classList.add('dark-mode');
+    } else {
+        document.body.classList.remove('dark-mode');
     }
 }

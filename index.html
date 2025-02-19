@@ -3,25 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat App</title>
+    <title>Chat Site</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div id="app">
-        <div id="login-container">
-            <h2>Login or Sign Up</h2>
-            <input type="text" id="username" placeholder="Username">
+    <div class="container">
+        <div id="themeSwitcher">
+            <label for="themeSelect">Theme:</label>
+            <select id="themeSelect" onchange="switchTheme()">
+                <option value="light">Light Mode</option>
+                <option value="dark">Dark Mode</option>
+            </select>
+        </div>
+        <div id="login" class="form">
+            <h2>Login</h2>
+            <input type="text" id="email" placeholder="Email">
             <input type="password" id="password" placeholder="Password">
             <button onclick="login()">Login</button>
-            <button onclick="signUp()">Sign Up</button>
+            <p>Don't have an account? <span onclick="showRegister()">Register</span></p>
         </div>
-        <div id="chat-container" style="display: none;">
-            <h2>Chats</h2>
-            <div id="friends-list"></div>
-            <button onclick="openAddFriend()">Add Friend</button>
-            <div id="chat-box"></div>
-            <input type="text" id="message" placeholder="Type a message">
-            <button onclick="sendMessage()">Send</button>
+        <div id="register" class="form hidden">
+            <h2>Register</h2>
+            <input type="text" id="newEmail" placeholder="Email">
+            <input type="password" id="newPassword" placeholder="Password">
+            <input type="text" id="username" placeholder="Username">
+            <button onclick="register()">Register</button>
+            <p>Have an account? <span onclick="showLogin()">Login</span></p>
+        </div>
+        <div id="chat" class="hidden">
+            <h2>Welcome, <span id="displayName"></span></h2>
+            <div id="friendRequests" class="hidden">
+                <h3>Friend Requests</h3>
+                <ul id="requestsList"></ul>
+            </div>
+            <div id="chatBox">
+                <div id="messages"></div>
+                <input type="text" id="message" placeholder="Type a message...">
+                <button onclick="sendMessage()">Send</button>
+            </div>
         </div>
     </div>
     <script src="script.js"></script>
