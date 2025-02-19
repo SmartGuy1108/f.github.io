@@ -24,7 +24,6 @@ function login() {
         document.getElementById('displayName').innerText = user.username;
         document.getElementById('login').classList.add('hidden');
         document.getElementById('chat').classList.remove('hidden');
-        switchDevice();
     } else {
         alert('Invalid credentials');
     }
@@ -66,17 +65,6 @@ function switchTheme() {
     }
 }
 
-function switchDevice() {
-    const device = document.getElementById('deviceSelect').value;
-    if (device === 'phone') {
-        document.querySelector('.container').classList.add('phone-mode');
-        document.querySelector('.container').classList.remove('laptop-mode');
-    } else {
-        document.querySelector('.container').classList.add('laptop-mode');
-        document.querySelector('.container').classList.remove('phone-mode');
-    }
-}
-
 function showAddChat() {
     const friendEmail = prompt('Enter the email of the friend you want to add:');
     if (friendEmail) {
@@ -103,4 +91,14 @@ function createGroup() {
         const groupMembers = prompt('Enter the emails of the group members, separated by commas:');
         const membersArray = groupMembers.split(',').map(email => email.trim());
         chats.push({ groupName, members: membersArray });
-        alert('
+        alert('Group created!');
+    }
+}
+
+function deleteChat() {
+    const chatToDelete = prompt('Enter the name of the chat you want to delete:');
+    if (chatToDelete) {
+        chats = chats.filter(chat => chat.groupName !== chatToDelete);
+        alert('Chat deleted!');
+    }
+}
