@@ -1,7 +1,6 @@
-let users = [];
+let users = JSON.parse(localStorage.getItem('users')) || [];
 let currentUser = null;
-let chats = [];
-let friendRequests = [];
+let friendRequests = JSON.parse(localStorage.getItem('friendRequests')) || [];
 
 function showLogin() {
     document.getElementById('login').classList.remove('hidden');
@@ -21,6 +20,7 @@ function login() {
     
     if (user) {
         currentUser = user;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
         document.getElementById('displayName').innerText = user.username;
         document.getElementById('login').classList.add('hidden');
         document.getElementById('chat').classList.remove('hidden');
@@ -41,6 +41,7 @@ function register() {
     } else {
         const newUser = { email, password, username, friends: [], friendRequests: [] };
         users.push(newUser);
+        localStorage.setItem('users', JSON.stringify(users));
         alert('Registration successful');
         showLogin();
     }
@@ -65,12 +66,15 @@ function switchTheme() {
     }
 }
 
-function showAddChat() {
-    const friendEmail = prompt('Enter the email of the friend you want to add:');
-    if (friendEmail) {
-        friendRequests.push({ from: currentUser.email, to: friendEmail });
-        alert('Friend request sent!');
-    }
+function viewFriendRequests() {
+    const friendRequestsList = document.getElementById('requestsList');
+    friendRequestsList.innerHTML = '';
+    friendRequests.forEach(request => {
+        const requestItem = document.createElement('li');
+        requestItem.innerText = `From: ${request.from}`;
+        friendRequestsList.appendChild(requestItem);
+    });
+    document.getElementById('friendRequests').classList.toggle('hidden');
 }
 
 function showEditOptions() {
@@ -81,6 +85,7 @@ function sendFriendRequest() {
     const friendEmail = prompt('Enter the email of the friend you want to add:');
     if (friendEmail) {
         friendRequests.push({ from: currentUser.email, to: friendEmail });
+        localStorage.setItem('friendRequests', JSON.stringify(friendRequests));
         alert('Friend request sent!');
     }
 }
@@ -100,5 +105,16 @@ function deleteChat() {
     if (chatToDelete) {
         chats = chats.filter(chat => chat.groupName !== chatToDelete);
         alert('Chat deleted!');
+    }
+}
+
+// Check if there is a logged-in user on page load
+window.onload = function() {
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+        document.getElementById('displayName').innerText = currentUser.username;
+        document.getElementById('login').classList.add('hidden');
+        document.getElementById('chat').classList.remove('hidden');
     }
 }
