@@ -62,3 +62,12 @@ function switchTheme() {
         document.body.classList.remove('dark-mode');
     }
 }
+
+// Add friend request functionality
+function sendFriendRequest() {
+    if (!currentUser) {
+        alert('You need to log in to send friend requests');
+        return;
+    }
+    // Functionality to send friend request goes here
+}
